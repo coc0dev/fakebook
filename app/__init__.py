@@ -26,16 +26,16 @@ def create_app(config_class=Config):
 
     from app.blueprints.blog import blog
     app.register_blueprint(blog)
-    from app.blueprints.shop import shop
-    app.register_blueprint(shop)
-    from app.blueprints.main import main
-    app.register_blueprint(main)
+    
     from app.blueprints.authentication import authentication
     app.register_blueprint(authentication)
 
     with app.app_context():
         # building the rest of the flask application (configurations, additional packages, etc)
-        from app.blueprints.main import routes
+        from app.blueprints.shop import shop
+        app.register_blueprint(shop)
+        from app.blueprints.main import main
+        app.register_blueprint(main)
         from .import context_processors
        
 
