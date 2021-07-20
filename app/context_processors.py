@@ -34,6 +34,9 @@ def build_cart():
                 }
             else:
                 cart_dict[str(product.id)]['quantity']+=1
+
+    def update_cart():
+        pass
     
     def format_currency(price):
         return f'${price:,.2f}'

@@ -12,6 +12,7 @@
             <div class="clearfix"></div>
         </div>
         <div class="card-body">
+            <form id="update_cart" action="{{ url_for('shop.update_cart') }}" method="POST">
            {% for p in cart %}
             <!-- PRODUCT -->
             <div class="row">
@@ -30,24 +31,26 @@
                     </div>
                     <div class="col-4 col-sm-4 col-md-4">
                         <div class="quantity">
-                            <input type="number" step="1" max="99" min="1" value="{{ p.quantity }}" title="Qty" class="qty" size="4">
+                            <input type="number" step="1" max="99" min="1" value="{{ p.quantity }}" name="quantity-{{ p.id }}" class="qty" size="4">
                         </div>
                     </div>
                     <div class="col-2 col-sm-2 col-md-2 text-right">
-                        <button type="button" class="btn btn-outline-danger btn-xs">
+                        <!-- <form action="{{ url_for('shop.remove_from_cart', id=p.id) }}" method="POST"> -->
                             <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
+                            <button onclick="deleteItem({{ p.id }})" type="button" class="btn btn-outline-danger btn-xs">delete</button>
+                        <!-- </form> -->
                     </div>
                 </div>
             </div>
             <hr>
+            {% endfor %}
             <!-- END PRODUCT -->
             <div class="pull-right">
-                <a href="" class="btn btn-outline-secondary pull-right">
-           {% endfor %}
+                <button form="update_cart" type="submit" class="btn btn-outline-secondary pull-right">
                     Update Shopping Cart
-                </a>
+                </button>
             </div>
+        </form>
         </div>
         <div class="card-footer">
             <!-- <div class="coupon col-md-5 col-sm-5 no-padding-left pull-left">
@@ -102,5 +105,18 @@
             .then(res => res.json())
             .then(data => {console.log(data); stripe.redirectToCheckout({ sessionId: data['session_id'] })})
         })
+
+        var deleteItem = (product_id) =>  {
+            fetch("{{ url_for('shop.remove_from_cart') }}", {
+                'method': 'POST',
+                'mode': 'cors',
+                'headers': {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'p': product_id })
+            })
+            .then(res => location.reload())
+            .catch(err => console.log(err))
+        }
     </script>
 {% endblock scripts %}

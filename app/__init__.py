@@ -30,6 +30,9 @@ def create_app(config_class=Config):
     from app.blueprints.authentication import authentication
     app.register_blueprint(authentication)
 
+    from app.blueprints.api import api
+    app.register_blueprint(api)
+
     with app.app_context():
         # building the rest of the flask application (configurations, additional packages, etc)
         from app.blueprints.shop import shop
